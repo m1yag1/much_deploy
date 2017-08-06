@@ -1,0 +1,7 @@
+[jupyterhub]
+130.211.181.84
+
+[jupyterhub:vars]
+ansible_ssh_host=130.211.181.84
+asnible_ssh_port=22
+ansible_ssh_user=mike.arbelaez

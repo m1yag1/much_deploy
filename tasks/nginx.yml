@@ -1,0 +1,14 @@
+- name: install nginx config
+  template:
+    src: templates/jupyterhub/nginx.yml.j2
+    dest: /etc/nginx/sites-available/jupyterhub.conf
+  become: yes
+
+- name: enable nginx config
+  file:
+    src=/etc/nginx/sites-available/jupyterhub.conf
+    dest=/etc/nginx/sites-enabled/jupyterhub.conf
+    state=link
+    force=yes
+  become: yes
+  notify: restart nginx

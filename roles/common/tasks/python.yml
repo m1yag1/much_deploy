@@ -1,0 +1,12 @@
+---
+- name: python
+  apt:
+    name: python
+    state: latest
+  become: yes
+
+- name: python-pip
+  apt:
+    name: python3-pip
+    state: latest
+  become: yes

@@ -1,0 +1,18 @@
+---
+- hosts:
+  - jupyterhub
+  vars:
+    home_dir: /home
+    home_path: "{{ home_dir }}/{{ ansible_ssh_user }}"
+    ssl_on: false
+    template_root: jupyterhub
+  roles:
+    - role: common
+      tags: config
+    - role: nginx
+      tags: config
+    - role: jupyterhub
+      tags: config
+  tasks:
+    - include: tasks/nginx.yml
+
