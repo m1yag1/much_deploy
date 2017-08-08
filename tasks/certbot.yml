@@ -1,0 +1,44 @@
+---
+# Borrowing some of these ideas from:
+# https://github.com/pyslackers/ansible-role-nginx
+- name: add certbot ppa
+  apt_repository:
+    repo: ppa:certbot/certbot
+  become: yes
+  when: ansible_os_family == 'Debian'
+
+- name: install certbot
+  apt:
+    name: certbot
+    state: latest
+  become: yes
+
+- name: "check if ssl certs are already generated"
+  stat:
+    path: "/etc/letsencrypt/live/{{ domains | first }}/fullchain.pem"
+  become: yes
+  register: fullchain
+
+- name: "stop nginx"
+  service:
+    name: nginx
+    state: stopped
+  when: not fullchain.stat.exists
+  notify:
+    - restart nginx
+
+- name: "generate ssl certificates"
+  command: "certbot certonly --standalone --email {{ email }}
+            --agree-tos -n -d {{ domains | join(',') }}{% if staging | default(false) %} --staging {% endif %}"
+  become: yes
+  when: not fullchain.stat.exists
+
+- name: create cron job to autorenew all ssl certificates
+  cron:
+    name: auto renew the ssl certificates
+    minute: 1
+    hour: 23
+    weekday: 0
+    job: '/usr/bin/certbot renew --quiet
+          --pre-hook "systemctl stop nginx.service"
+          --post-hook "systemctl start nginx.service"'

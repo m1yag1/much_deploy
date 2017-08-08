@@ -1,0 +1,27 @@
+---
+- name: add jupyter group
+  group:
+    name: jupyter
+    state: present
+  become: true
+  tags: jupyter
+
+- name: add jupyter user
+  user:
+    name: jupyter
+    state: present
+    groups: jupyter,shadow
+    password: "{{ jupyter_password }}"
+  become: true
+  tags: jupyter
+
+
+- name: Copy sudospawner config for jupyter user
+  template:
+    src: templates/jupyterhub/jupyter_sudo.j2
+    dest: /etc/sudoers.d/jupyter
+    mode: 0440
+    owner: root
+    group: root
+  become: yes
+  tags: jupyter

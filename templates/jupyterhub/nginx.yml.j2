@@ -1,37 +1,66 @@
+# {{ ansible_managed }}
+
 server {
   listen 80;
-  server_name {{ server_name }};
+  server_name {{ domains | first }};
   types_hash_max_size 2046;
+{% if ssl_on %}
+  return 301 https://{{ domains[1] }}$request_uri;
+  }
+{% endif %}
 
+{% if ssl_on %}
 
-location ~ /(user-[a-zA-Z0-9]*)/static(.*) {
-alias {{ notebook_static_files }}$2;
+server {
+  listen 443 ssl;
+  server_name {{ domains[1] }};
+
+  ssl on;
+  ssl_certificate {{ certbot_ssl_cert_path }};
+  ssl_certificate_key {{ certbot_ssl_key_path }};
+
+  ssl_ciphers "AES128+EECDH:AES128+EDH";
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
+  ssl_session_cache shared:SSL:10m;
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains";
+  add_header X-Content-Type-Options nosniff;
+  ssl_stapling on; # Requires nginx >= 1.3.7
+  ssl_stapling_verify on; # Requires nginx => 1.3.7
+  resolver_timeout 5s;
+
+  # Expose logs to "docker logs".
+  # See https://github.com/nginxinc/docker-nginx/blob/master/Dockerfile#L12-L14
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log;
+{% endif %}
+  location ~ /(user-[a-zA-Z0-9]*)/static(.*) {
+    alias {{ notebook_static_files }}$2;
+  }
+
+  location / {
+    proxy_pass http://{{ jupyterhub_host }}:8000;
+
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    proxy_set_header X-NginX-Proxy true;
 }
 
-location / {
-proxy_pass http://{{ jupyterhub_host }}:8000;
+  location ~* /(user/[^/]*)/(api/kernels/[^/]+/channels|terminals/websocket)/? {
+    proxy_pass http://{{ jupyterhub_host }}:8000;
 
-proxy_set_header X-Real-IP $remote_addr;
-proxy_set_header Host $host;
-proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
-proxy_set_header X-NginX-Proxy true;
-}
+    proxy_set_header X-NginX-Proxy true;
 
-location ~* /(user/[^/]*)/(api/kernels/[^/]+/channels|terminals/websocket)/? {
-proxy_pass http://{{ jupyterhub_host }}:8000;
-
-proxy_set_header X-Real-IP $remote_addr;
-proxy_set_header Host $host;
-proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-proxy_set_header X-NginX-Proxy true;
-
-# WebSocket support
-proxy_http_version 1.1;
-proxy_set_header Upgrade $http_upgrade;
-proxy_set_header Connection "upgrade";
-proxy_read_timeout 86400;
-
-}
+    # WebSocket support
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_read_timeout 86400;
+  }
 }

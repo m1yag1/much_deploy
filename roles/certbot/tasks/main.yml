@@ -1,0 +1,12 @@
+---
+# Borrowing some of these ideas from:
+# https://github.com/pyslackers/ansible-role-nginx
+- name: add certbot ppa
+  apt_repository:
+    repo: ppa:certbot/certbot
+    when: ansible_os_family == 'Debian'
+
+- name: install certbot
+  apt:
+    name: certbot
+    state: latest

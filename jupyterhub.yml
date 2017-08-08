@@ -1,18 +1,41 @@
 ---
-- hosts:
+- name: Jupyterhub Playbook
+  hosts:
   - jupyterhub
   vars:
     home_dir: /home
     home_path: "{{ home_dir }}/{{ ansible_ssh_user }}"
-    ssl_on: false
-    template_root: jupyterhub
   roles:
     - role: common
       tags: config
     - role: nginx
       tags: config
     - role: jupyterhub
-      tags: config
+      tags: config, jupyter
   tasks:
-    - include: tasks/nginx.yml
+    - name: Confiure nginx
+      include: tasks/nginx.yml
+      nginx_app_name: jupyterhub
+      certbot_ssl_cert_path: /etc/letsencrypt/live/{{ domains | first }}/fullchain.pem
+      certbot_ssl_key_path: /etc/letsencrypt/live/{{ domains | first }}/privkey.pem
+      tags: jupyter, nginx
+    - name: Install certificates w/ certbot
+      include: tasks/certbot.yml
+      when: ssl_on
+    - name: "Configure Jupyterhub for Live Action!"
+      include: tasks/jupyterhub_config.yml
+      tags: jupyter
+    - name: Setup system with the Jupyterhub service
+      include: tasks/jupyterhub_systemd.yml
+      tags: systemd
+      template_root: jupyterhub
+    - name: Restart Jupyterhub
+      service:
+        name: jupyterhub
+        enabled: yes
+        state: started
+      become: yes
+
+
+
 
