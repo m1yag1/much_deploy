@@ -1,0 +1,30 @@
+- include: tasks/jupyterhub_user.yml
+  tags: jupyter
+
+- name: Create jupyterhub folder in /etc directory
+  file:
+    path: /etc/jupyterhub
+    state: directory
+    mode: 0755
+    owner: jupyter
+    group: jupyter
+  become: yes
+  tags: jupyter
+
+- name: Check if jupyterhub config exists
+  stat:
+    path: /etc/jupyterhub/jupyterhub_config.py
+  register: config_exists
+  tags: jupyter
+
+- name: Create jupyterhub config file
+  template:
+    src: templates/jupyterhub/jupyter_config.py.j2
+    dest: /etc/jupyterhub/jupyter_config.py
+    mode: 0755
+    owner: jupyter
+    group: jupyter
+  become: yes
+  tags: jupyter
+
+

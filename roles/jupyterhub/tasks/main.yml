@@ -27,9 +27,9 @@
   apt: update_cache=yes
   become: yes
 
-- name: Install nodejs
+- name: install npm
   apt:
-    name: nodejs
+    name: npm
   become: yes
 
 - name: install nodejs legacy
@@ -44,8 +44,20 @@
     state: latest
   become: yes
 
+- name: install notebook
+  pip:
+    name: notebook
+    executable: /usr/bin/pip3
+  become: yes
+
 - name: install jupyterhub
   pip:
     name: jupyterhub
+    executable: /usr/bin/pip3
+  become: yes
+
+- name: install sudospawner
+  pip:
+    name: sudospawner
     executable: /usr/bin/pip3
   become: yes

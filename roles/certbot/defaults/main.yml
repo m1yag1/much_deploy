@@ -1,0 +1,9 @@
+# These are the paths to the SSL certificate and key. This should be overwritten
+# in an encrypted vault file.
+ssl_cert_path: /etc/letsencrypt/live/{{ domains | first }}/fullchain.pem
+ssl_key_path: /etc/letsencrypt/live/{{ domains | first }}/privkey.pem
+
+# These are the contents of the SSL certificate and key themselves. These should
+# also be overwritten in an encrypted vault file.
+ssl_cert: ''
+ssl_key: ''

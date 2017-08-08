@@ -28,4 +28,3 @@
     state: absent
     path: /etc/nginx/sites-available/default
   become: yes
-
