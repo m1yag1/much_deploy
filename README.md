@@ -2,12 +2,14 @@
 
 ## Purpose
 
-I'm currently iterating on a lot of ideas and needed to get a few
-different kinds of servers in the wild. Each of these represents
-some goal. I allowed my ansible to get rusty so I'm taking a look at some
-old playbooks to get up to speed.
+These are my personal playbooks. I like to reference my own things when people
+ask questions or I forgot something due to a brain retrieval error.
 
-I don't expect it to be pretty but it sure damn better work.
+I'm currently iterating on a lot of ideas and needed to get a few
+different kinds of servers in the wild. I allowed my ansible to get rusty
+so I'm refactoring old playbooks to get up to speed.
+
+I don't expect it to be pretty but they better damn sure work.
 
 ## Ansible Philosophy
 
