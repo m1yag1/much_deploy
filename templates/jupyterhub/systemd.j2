@@ -3,9 +3,14 @@ Description=Jupyterhub
 After=syslog.target network.target
 
 [Service]
-User=root
+User=jupyter
+WorkingDirectory=/etc/jupyterhub
+Environment="OAUTH_CALLBACK_URL={{ jupyterhub_oauth_callback_url }}"
+Environment="OAUTH_CLIENT_ID={{ github_client_id }}"
+Environment="OAUTH_CLIENT_SECRET={{ github_client_secret }}"
 Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
-ExecStart=/usr/local/bin/jupyterhub -f /home/jupyter/jupyterhub_config.py
+ExecStart=/usr/local/bin/jupyterhub -f /etc/jupyterhub/jupyter_config.py --debug
+
 
 [Install]
 WantedBy=multi-user.target

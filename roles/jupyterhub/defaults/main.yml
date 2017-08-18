@@ -19,3 +19,5 @@ nodejs_npm_global_packages: []
 
 # The path of a package.json file used to install packages globally.
 nodejs_package_json_path: ""
+
+jupyterhub_oauth_callback_url: "https://jupyterhub.mikefromit/hub/oauth_callback"

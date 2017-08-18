@@ -18,7 +18,7 @@
     dest: "/tmp/pubkeys/{{ item }}-pubkeys"
     url: "https://github.com/{{ item }}.keys"
     force: yes
-  with_items: github_usernames
+  with_items: "{{ github_usernames }}"
   tags:
     - ssh
 
