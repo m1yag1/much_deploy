@@ -25,6 +25,7 @@
     owner: jupyter
     group: jupyter
   become: yes
+  when: not config_exists
   tags: jupyter
 
 

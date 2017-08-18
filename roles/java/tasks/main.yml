@@ -1,0 +1,17 @@
+---
+- name: Add WebUpd8 for installing Oracle JDK
+  apt_repository:
+    repo: "ppa:webupd8team/java"
+
+- name: Accept the Oracle Java license agreement
+  script: accept-java-license.sh creates=/root/.java-license-accepted
+
+- name: Install Oracle JDK 8
+  apt:
+    name: oracle-java8-installer
+    state: present
+
+- name: Remove Oracle JDK 7
+  apt:
+    name: oracle-java7-installer
+    state: absent

@@ -1,0 +1,25 @@
+- name: Create a build directory for spigot
+  file:
+    path: /tmp/spigot
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Check if spigot build log exists
+  stat:
+    path: /tmp/spigot/BuildTools.log.txt
+  register: build_exists
+
+- name: fetch the Build Tools for spigot
+  get_url:
+    dest: /tmp/spigot/BuildTools.jar
+    url: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+    force: yes
+  when: not build_exists
+
+- name: build spigot
+  command: java -jar BuildTools.jar chdir=/tmp/spigot
+  become: yes
+  when: not build_exists
+

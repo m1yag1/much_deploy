@@ -1,0 +1,16 @@
+---
+- name: Create Minecraft group
+  group:
+    name: minecraft
+    state: present
+  tags: minecraft
+
+- name: Add Minecraft user
+  user:
+    name: minecraft
+    state: present
+    groups: minecraft
+    home: "{{ home_path }}"
+    createhome: no
+    system: yes
+    shell: /bin/false
