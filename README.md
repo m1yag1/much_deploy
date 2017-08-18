@@ -39,6 +39,13 @@ for users. This seems like an excellent platform to place tutorials
 and example code. GitHub renders jupyter notebooks and they are not only for
 Python use. Julia and R are also supported kernels.
 
+### [Minecraft Spigot Server](minecraft.yml)
+
+A minecraft spigot server with no plugins, yet. I was surprised how much
+stuff had changed with setting up a minecraft server. This is using spigot
+b/c apparently craftbukkit violated some DMCA so now we have spigot which
+still has craftbukkit but we have to build the server ourselves. This playbook
+helps with all that.
 
 ## A Special Thanks
 

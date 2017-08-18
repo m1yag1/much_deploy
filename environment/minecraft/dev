@@ -1,0 +1,9 @@
+[minecraft]
+165.227.111.170
+
+[minecraft:vars]
+ansible_ssh_host=165.227.111.170
+spigot1649_path=/var/src/spigot1649.jar
+
+[secrets:children]
+minecraft

@@ -1,0 +1,3 @@
+minecraft_home: /var/lib/minecraft
+minecraft_lib: /usr/local/lib/minecraft
+spigot_lib: /usr/local/lib/minecraft/spigot

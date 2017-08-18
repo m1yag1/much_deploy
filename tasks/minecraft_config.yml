@@ -1,0 +1,62 @@
+---
+- name: Create Minecraft home directory
+  file:
+    path: "{{minecraft_home }}"
+    state: directory
+    owner: minecraft
+    group: minecraft
+
+
+- name: Create Minecraft lib directory
+  file:
+    path: "{{ minecraft_lib }}"
+    state: directory
+    owner: root
+    group: root
+
+- name: Create Spigot lib directory
+  file:
+    path: /usr/local/lib/minecraft/spigot
+    state: directory
+    owner: root
+    group: root
+
+- name: Create Spigot patcher directory
+  file:
+    path: /usr/local/lib/minecraft/spigot/jars
+    state: directory
+    owner: root
+    group: root
+
+- name: Create spigot Patches directory
+  file:
+    path: /usr/local/lib/minecraft/spigot/patches
+    state: directory
+    owner: root
+    group: root
+
+- name: Find the spigot jars created during build process
+  find:
+    paths: /tmp/spigot
+    patterns: "spigot*.jar"
+  register: spigot_jar_files
+
+- name: Copy the spigot jars to the minecraft folder
+  command: "mv {{ item.path }} /usr/local/lib/minecraft/spigot/"
+  with_items: "{{ spigot_jar_files.files }}"
+  when: spigot_jar_files
+
+- name: Copy Minecraft EULA
+  copy:
+    src: files/minecraft/minecraft-eula.txt
+    dest: "/usr/local/lib/minecraft/spigot/eula.txt"
+    owner: root
+    group: root
+
+- name: Add the systemd configuration
+  template:
+    src: templates/minecraft/systemd.j2
+    dest: /etc/systemd/system/minecraft.service
+  become: yes
+  tags: systemd
+

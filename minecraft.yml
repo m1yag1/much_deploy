@@ -1,0 +1,24 @@
+---
+- name: Install and configure a spigot Minecraft server with plugins
+  hosts:
+    - minecraft
+  vars:
+    home_dir: /home
+    home_path: "{{ home_dir }}/{{ ansible_ssh_user }}"
+  roles:
+    - role: common
+      tags: config
+    - role: java
+      tags: config
+    - role: minecraft-spigot
+  tasks:
+    - name: Create the Minecraft user and dirs
+      include: tasks/minecraft_user.yml
+    - name: Configure the Minecraft server
+      include: tasks/minecraft_config.yml
+    - name: Start minecraft server
+      service:
+        name: minecraft
+        enabled: yes
+        state: started
+      become: yes

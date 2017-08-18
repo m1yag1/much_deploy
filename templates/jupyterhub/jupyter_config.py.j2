@@ -96,7 +96,7 @@
 ## The cookie secret to use to encrypt cookies.
 #
 #  Loaded from the JPY_COOKIE_SECRET env variable by default.
-#c.JupyterHub.cookie_secret = b''
+c.JupyterHub.cookie_secret = b'{{ jupyter_cookie_secret }}'
 
 ## File in which to store the cookie secret.
 #c.JupyterHub.cookie_secret_file = 'jupyterhub_cookie_secret'
@@ -208,7 +208,16 @@
 #              'environment':
 #          }
 #      ]
-#c.JupyterHub.services = []
+# c.JupyterHub.services = [
+#     {
+#         'name': 'nbviewer',
+#         'url': 'http://127.0.0.1:9000',
+#         'cwd': '/home/jupyter',
+#         'command': ['python', '-m', 'nbviewer']
+#     }
+#
+#
+# ]
 
 ## The class to use for spawning single-user servers.
 #
