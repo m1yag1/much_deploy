@@ -33,6 +33,9 @@ structure over others other than we use a similar one at my company and it works
 
 ### [Jupyterhub](jupyterhub.yml)
 
+- Includes GitHub Authentication
+- Runs jupyterhub without sudo using sudospawner
+
 This is a pretty interesting playbook to explore some possibilities with
 Jupyterhub. Jupyterhub allows you to start up single-session jupyter notebooks
 for users. This seems like an excellent platform to place tutorials
@@ -40,6 +43,9 @@ and example code. GitHub renders jupyter notebooks and they are not only for
 Python use. Julia and R are also supported kernels.
 
 ### [Minecraft Spigot Server](minecraft.yml)
+
+- Supports plugins
+- Spigot Server
 
 A minecraft spigot server with no plugins, yet. I was surprised how much
 stuff had changed with setting up a minecraft server. This is using spigot

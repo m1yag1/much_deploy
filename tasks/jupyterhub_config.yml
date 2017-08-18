@@ -11,12 +11,6 @@
   become: yes
   tags: jupyter
 
-- name: Check if jupyterhub config exists
-  stat:
-    path: /etc/jupyterhub/jupyterhub_config.py
-  register: config_exists
-  tags: jupyter
-
 - name: Create jupyterhub config file
   template:
     src: templates/jupyterhub/jupyter_config.py.j2
@@ -25,7 +19,4 @@
     owner: jupyter
     group: jupyter
   become: yes
-  when: not config_exists
   tags: jupyter
-
-

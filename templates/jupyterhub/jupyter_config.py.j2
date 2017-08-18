@@ -1,4 +1,7 @@
 # {{ ansible_managed }}
+
+from oauthenticator.github import GitHubOAuthenticator
+
 # Configuration file for jupyterhub.
 
 #------------------------------------------------------------------------------
@@ -55,7 +58,10 @@
 #  - takes two arguments: (handler, data),
 #    where `handler` is the calling web.RequestHandler,
 #    and `data` is the POST form data from the login page.
-#c.JupyterHub.authenticator_class = 'jupyterhub.auth.PAMAuthenticator'
+c.JupyterHub.authenticator_class = GitHubOAuthenticator
+c.GitHubOAuthenticator.oauth_callback_url = '{{ jupyterhub_oauth_callback_url }}'
+c.GitHubOAuthenticator.client_id = '{{ github_client_id }}'
+c.GitHubOAuthenticator.client_secret = '{{ github_client_secret }}'
 
 ## The base URL of the entire application
 #c.JupyterHub.base_url = '/'
@@ -96,7 +102,7 @@
 ## The cookie secret to use to encrypt cookies.
 #
 #  Loaded from the JPY_COOKIE_SECRET env variable by default.
-c.JupyterHub.cookie_secret = b'{{ jupyter_cookie_secret }}'
+# c.JupyterHub.cookie_secret = b'{{ jupyter_cookie_secret }}'
 
 ## File in which to store the cookie secret.
 #c.JupyterHub.cookie_secret_file = 'jupyterhub_cookie_secret'
@@ -223,6 +229,7 @@ c.JupyterHub.cookie_secret = b'{{ jupyter_cookie_secret }}'
 #
 #  Should be a subclass of Spawner.
 c.JupyterHub.spawner_class = 'sudospawner.SudoSpawner'
+c.SudoSpawner.sudospawner_path = '/usr/local/bin/sudospawner'
 
 ## Path to SSL certificate file for the public facing interface of the proxy
 #
@@ -505,7 +512,7 @@ c.JupyterHub.spawner_class = 'sudospawner.SudoSpawner'
 #  Admin access should be treated the same way root access is.
 #
 #  Defaults to an empty set, in which case no user has admin access.
-c.Authenticator.admin_users = set('jupyter')
+c.Authenticator.admin_users = set(['jupyter', 'm1yag1'])
 
 ## Dictionary mapping authenticator usernames to JupyterHub users.
 #

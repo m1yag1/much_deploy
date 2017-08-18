@@ -33,7 +33,8 @@
       service:
         name: jupyterhub
         enabled: yes
-        state: started
+        state: restarted
+        daemon_reload: yes
       become: yes
 
 
