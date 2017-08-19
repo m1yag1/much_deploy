@@ -8,6 +8,8 @@
   roles:
     - role: common
       tags: config
+    - role: fail2ban
+      tags: config
     - role: nginx
       tags: config
     - role: jupyterhub
