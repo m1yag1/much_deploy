@@ -1,7 +1,18 @@
 ---
+- name: Add jonathonf ppa for latest python versions
+  apt_repository:
+    repo: "ppa:jonathonf/python-3.6"
+  become: yes
+
 - name: python
   apt:
     name: python
+    state: latest
+  become: yes
+
+- name: python3.6
+  apt:
+    name: python3.6
     state: latest
   become: yes
 

@@ -47,23 +47,23 @@
 - name: install notebook
   pip:
     name: notebook
-    executable: /usr/bin/pip3
+    executable: pip3.6
   become: yes
 
 - name: install jupyterhub
   pip:
     name: jupyterhub
-    executable: /usr/bin/pip3
+    executable: pip3.6
   become: yes
 
 - name: install oauthenticator
   pip:
     name: oauthenticator
-    executable: /usr/bin/pip3
+    executable: pip3.6
   become: yes
 
 - name: install sudospawner
   pip:
     name: sudospawner
-    executable: /usr/bin/pip3
+    executable: pip3.6
   become: yes

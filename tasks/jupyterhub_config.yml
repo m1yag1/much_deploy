@@ -20,3 +20,30 @@
     group: jupyter
   become: yes
   tags: jupyter
+
+- name: Check if ipython kernel was installed
+  stat:
+    path: /etc/jupyterhub/.kernel
+  register: kernel_installed
+
+- name: Pip install ipykernel
+  pip:
+    name: ipykernel
+  become: yes
+
+- name: Install the ipython kernel
+  command: python3.6 -m ipykernel install --name py36 --display-name "Python 3.6"
+  become: yes
+  when: kernel_installed
+
+- name: Create kernel file if it doesn't exist so we don't re-run this.
+  file:
+    content: ""
+    dest: /etc/jupyterhub/.kernel
+    state: touch
+    owner: jupyter
+    group: jupyter
+    force: no
+  become: yes
+
+
