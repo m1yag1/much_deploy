@@ -35,6 +35,8 @@ structure over others other than we use a similar one at my company and it works
 
 - Includes GitHub Authentication
 - Runs jupyterhub without sudo using sudospawner
+- Sets up a Python 3.6 Kernel
+- Supports f-strings
 
 This is a pretty interesting playbook to explore some possibilities with
 Jupyterhub. Jupyterhub allows you to start up single-session jupyter notebooks
